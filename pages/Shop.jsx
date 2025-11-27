@@ -1,8 +1,8 @@
-import React, { useContext } from "react";   // ← FIXED missing useContext import
+import React, { useContext, useState } from "react";
 import "remixicon/fonts/remixicon.css";
 import Naavbar from "../components/Naavbar";
 import Footer from "../sections/Home/Footer";
-import { CartContext } from "../Context/CartContext"; 
+import { CartContext } from "../Context/CartContext";
 
 const products = [
   {
@@ -78,57 +78,78 @@ const products = [
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-YCmc6G3BVhLQFO3gDMlJsDhd5TA5SS_ViQ&s",
   },
 ];
-
 const Shop = () => {
-  const { addToCart } = useContext(CartContext); // ← USING Cart Context
+  const { addToCart } = useContext(CartContext);
+  const [qty, setQty] = useState({});
+
+  const increase = (product) => {
+    setQty((prev) => {
+      const newCount = (prev[product.id] || 0) + 1;
+      addToCart(product, 1);
+      return { ...prev, [product.id]: newCount };
+    });
+  };
+
+  const decrease = (product) => {
+    setQty((prev) => {
+      const newCount = (prev[product.id] || 1) - 1;
+      if (newCount <= 0) return { ...prev, [product.id]: 0 };
+      return { ...prev, [product.id]: newCount };
+    });
+  };
 
   return (
     <>
       <Naavbar />
-
-      <div className="w-full pt-32 pb-20 bg-[#0d0d0d] text-white flex flex-col items-center gap-10">
-
-        <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#00ff99] to-[#067a55] bg-clip-text text-transparent">
+      <div className="pt-32 pb-20 bg-[#0d0d0d] text-white text-center font-[Poppins]">
+        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-[#00ff99] to-[#067a55] bg-clip-text text-transparent animate-fadeIn">
           Shop Your Favorite Plants 🌿
         </h1>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-11 max-w-6xl w-full px-6">
-
-          {products.map((item) => (
-            <div
-              key={item.id}
-              className="bg-[#111] rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:scale-105 hover:shadow-[#00ff99]/40 cursor-pointer"
-            >
-              <img src={item.img} alt={item.name} className="w-full h-56 object-cover" />
-
-              <div className="p-4 flex flex-col gap-2">
-                <h1 className="text-xl font-semibold">{item.name}</h1>
-                <p className="text-gray-300 text-sm">{item.type}</p>
-                <p className="text-[#00ff99] font-bold text-lg">{item.price}</p>
-
-                <div className="flex items-center gap-1 text-[#00ff99]">
-                  <i className="ri-star-fill"></i>
-                  <span className="text-sm">{item.rating}</span>
-                  <span className="text-xs text-gray-400">({item.reviews} reviews)</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 max-w-6xl mx-auto px-6 mt-10 animate-fadeInSlow">
+          {products.map((item) => {
+            const count = qty[item.id] || 0;
+            return (
+              <div
+                key={item.id}
+                className="bg-[#111111c5] backdrop-blur-md rounded-2xl shadow-xl p-5 
+                hover:scale-[1.05] hover:shadow-[0_0_20px_#00ff99] transition-all duration-500"
+              >
+                <div className="overflow-hidden rounded-xl">
+                  <img
+                    src={item.img}
+                    className="w-full h-56 object-cover rounded-xl hover:scale-110 transition-all duration-700"
+                  />
                 </div>
 
-                <div className="flex gap-2 mt-2">
+                <h2 className="text-xl font-bold mt-3">{item.name}</h2>
+                <p className="text-gray-400 text-sm">{item.type}</p>
+
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <span className="text-[#00ff99] font-bold">{item.rating}</span>
+                  <span className="text-yellow-300 text-lg">⭐</span>
+                  <span className="text-gray-400 text-sm">({item.reviews})</span>
+                </div>
+
+                <p className="text-[#00ff99] font-bold text-xl mt-1">{item.price}</p>
+
+                {count === 0 ? (
                   <button
-                    onClick={() => addToCart(item)}
-                    className="w-1/2 py-2 text-sm bg-[#00ff99] text-black rounded-md font-semibold transition-all hover:scale-105"
+                    onClick={() => increase(item)}
+                    className="mt-4 w-full bg-[#00ff99] text-black py-2 rounded-md font-semibold hover:bg-[#05e98c] transition-all duration-300 hover:scale-105"
                   >
-                    Add to Cart
+                    Add to Cart +
                   </button>
-
-                  <button className="w-1/2 py-2 text-sm border border-[#00ff99] rounded-md font-semibold hover:bg-[#00ff99] hover:text-black transition-all hover:scale-105">
-                    <a className="w-full h-full" href="/pay">Buy Now</a>
-                  </button>
-                </div>
+                ) : (
+                  <div className="flex justify-between mt-4 bg-[#0d0d0d] py-2 px-4 rounded-md">
+                    <button onClick={() => decrease(item)} className="text-xl font-bold">−</button>
+                    <span className="font-bold">{count}</span>
+                    <button onClick={() => increase(item)} className="text-xl font-bold">+</button>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
-
+            );
+          })}
         </div>
       </div>
 

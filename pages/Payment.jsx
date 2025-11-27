@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Naavbar from "../components/Naavbar";
 import Footer from "../sections/Home/Footer";
 import { Link, useLocation } from "react-router-dom";
@@ -6,57 +6,95 @@ import { Link, useLocation } from "react-router-dom";
 const Payment = () => {
   const location = useLocation();
   const product = location.state?.product;
+  const totalAmount = location.state?.totalAmount || 0;
+
+  const [selectedUPI, setSelectedUPI] = useState(null);
+
+  const upiApps = [
+    {
+      name: "Google Pay",
+      logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-pay-icon.png",
+    },
+    {
+      name: "PhonePe",
+      logo: "https://e7.pngegg.com/pngimages/332/615/png-clipart-phonepe-india-unified-payments-interface-india-purple-violet.png",
+    },
+    {
+      name: "Paytm",
+      logo: "https://www.citypng.com/public/uploads/preview/paytm-circle-logo-hd-png-701751694706614zmho56voff.png",
+    },
+  ];
 
   return (
     <>
       <Naavbar />
 
-      <div className="pt-32 min-h-screen bg-[#0d0d0d] text-white flex justify-center px-6">
-        <div className="bg-[#111] max-w-3xl w-full p-8 rounded-2xl shadow-[0_0_25px_#00ff9980] flex flex-col gap-6">
+      <div className="pt-32 min-h-screen bg-[#0d0d0d] text-white flex justify-center px-6 font-[Poppins] animate-fadeIn">
+        <div className="bg-[#111111bb] backdrop-blur-xl max-w-3xl w-full p-10 rounded-3xl shadow-[0_0_30px_#00ff9966] flex flex-col gap-6 animate-fadeInSlow">
 
-          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-[#00ff99] to-[#067a55] bg-clip-text text-transparent">
-            Complete Your Purchase 🌿
+          <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-[#00ff99] to-[#067a55] bg-clip-text text-transparent">
+            Complete Your Purchase 🌱
           </h1>
 
           {/* PRODUCT SUMMARY */}
-          <div className="flex items-center gap-6 bg-[#0d0d0d] p-4 rounded-xl">
-            <img src={product?.img} alt={product?.name}
-              className="w-32 h-32 object-cover rounded-xl" />
+          <div className="flex items-center gap-6 bg-[#0d0d0dcc] p-5 rounded-2xl hover:shadow-[0_0_20px_#00ff99] transition-all duration-500">
+            <img
+              src="https://www.citypng.com/public/uploads/preview/hd-shopping-cart-white-logo-icon-transparent-png-701751694973936amdcratijm.png"
+              alt={product?.name}
+              className="w-32 h-32 object-contain rounded-xl"
+            />
 
-            <div className="flex flex-col">
-              <h2 className="text-2xl font-semibold">{product?.name}</h2>
-              <p className="text-gray-300">{product?.type}</p>
-              <p className="text-[#00ff99] font-bold text-xl mt-2">{product?.price}</p>
+            <div>
+              <h2 className="text-2xl font-semibold">{product?.name || "Cart Items"}</h2>
+              <p className="text-[#00ff99] font-extrabold text-4xl mt-2 animate-pulse">
+                ₹{totalAmount}/-
+              </p>
             </div>
           </div>
 
-          {/* PAYMENT FORM */}
-          <div className="flex flex-col gap-5">
-            <h2 className="text-2xl font-semibold">Billing Details</h2>
-
-            <input type="text" placeholder="Full Name" className="p-3 rounded-md bg-[#0d0d0d] border border-[#00ff99]" />
-            <input type="email" placeholder="Email" className="p-3 rounded-md bg-[#0d0d0d] border border-[#00ff99]" />
-            <input type="tel" placeholder="Phone Number" className="p-3 rounded-md bg-[#0d0d0d] border border-[#00ff99]" />
-            <input type="text" placeholder="Address" className="p-3 rounded-md bg-[#0d0d0d] border border-[#00ff99]" />
-
-            <h2 className="text-2xl font-semibold mt-3">Payment Method</h2>
-
-            <select className="p-3 bg-[#0d0d0d] border border-[#00ff99] rounded-md">
-              <option>UPI</option>
-              <option>Credit / Debit Card</option>
-              <option>Net Banking</option>
-              <option>Cash on Delivery</option>
-            </select>
-
-            <button className="mt-3 bg-[#00ff99] text-black font-bold py-4 rounded-xl text-xl hover:scale-110 transition-all">
-              Pay Now 💳
-            </button>
-
-            <Link to="/shop" className="text-center text-gray-300 hover:text-[#00ff99] transition-all">
-              ← Back to Shop
-            </Link>
+          {/* UPI APPS */}
+          <h2 className="text-2xl font-bold mt-4 text-[#00ff99]">Choose UPI App</h2>
+          <div className="grid grid-cols-3 gap-5 mt-3">
+            {upiApps.map((app, index) => (
+              <div
+                key={index}
+                onClick={() => setSelectedUPI(app.name)}
+                className={`flex flex-col items-center cursor-pointer border rounded-2xl p-5 bg-[#0d0d0d] transition-all duration-500 hover:scale-110 hover:shadow-[0_0_15px_#00ff99] ${
+                  selectedUPI === app.name
+                    ? "border-[#00ff99] shadow-[0_0_20px_#00ff99]"
+                    : "border-gray-700"
+                }`}
+              >
+                <img src={app.logo} alt={app.name} className="w-14 h-14 object-contain" />
+                <p className="mt-3 font-semibold">{app.name}</p>
+              </div>
+            ))}
           </div>
 
+          {/* PAYMENT BUTTON */}
+          <div className="bg-[#0d0d0dcc] p-5 rounded-2xl mt-6 flex justify-between items-center shadow-inner">
+            <h2 className="text-xl font-semibold">
+              Total: <span className="text-[#00ff99] font-bold">₹{totalAmount}/-</span>
+            </h2>
+
+            <button
+              disabled={!selectedUPI}
+              className={`py-3 px-10 rounded-2xl text-lg font-bold transition-all duration-300 ${
+                selectedUPI
+                  ? "bg-[#00ff99] text-black hover:scale-110 hover:shadow-[0_0_20px_#00ff99]"
+                  : "bg-gray-600 text-gray-400 cursor-not-allowed"
+              }`}
+            >
+              Pay with {selectedUPI || "UPI"} 💳
+            </button>
+          </div>
+
+          <Link
+            to="/shop"
+            className="text-center text-gray-300 hover:text-[#00ff99] transition-all duration-300 mt-2 hover:underline hover:tracking-widest"
+          >
+            ← Back to Shop
+          </Link>
         </div>
       </div>
 
