@@ -17,7 +17,7 @@ const Shopbtn = () => {
         hover:shadow-green-500/50
         transition-all duration-300 ease-out
       ">
-        Shop Now
+       <a className='h-full w-full' href="/shop">Shop Now</a>
       </button>
     </div>
   )
