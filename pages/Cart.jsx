@@ -19,7 +19,14 @@ const Cart = () => {
         <h1 className="text-4xl font-bold text-center text-[#00ff99]">Your Cart 🛒</h1>
 
         {cart.length === 0 ? (
-          <div className="text-center mt-10">Cart is Empty</div>
+          <div className="text-center mt-10 flex justify-center items-center flex-col gap-5">Cart is Empty
+               <Link to="/shop" state={{ totalAmount: totalPrice }}>
+                <button className="bg-[#00ff99] text-black font-bold px-6 py-3 rounded-lg">
+                  Go Back
+                </button>
+              </Link>
+          </div>
+          
         ) : (
           <div className="max-w-5xl mx-auto mt-10 flex flex-col gap-6">
             {cart.map((item) => (
@@ -53,6 +60,11 @@ const Cart = () => {
                 </button>
               </Link>
             </div>
+             <Link to="/shop" state={{ totalAmount: totalPrice }}>
+                <button className="bg-[#00ff99] text-black font-bold px-6 py-3 rounded-lg">
+                  Go Back
+                </button>
+              </Link>
           </div>
         )}
       </div>
