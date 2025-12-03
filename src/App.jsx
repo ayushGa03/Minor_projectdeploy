@@ -18,7 +18,7 @@ const App = () => {
         <Toaster position="top-center" reverseOrder={false} />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
