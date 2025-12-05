@@ -42,11 +42,11 @@ const Naavbar = () => {
           ))}
 
           {/* SOCIAL ICONS */}
-          <div className="flex gap-4 ml-2 text-xl">
-            <i className="fa-brands fa-youtube hover:text-red-500 transition-all cursor-pointer"></i>
-            <i className="fa-brands fa-instagram hover:text-pink-500 transition-all cursor-pointer"></i>
-            <i className="fa-brands fa-facebook hover:text-blue-500 transition-all cursor-pointer"></i>
-            <i className="fa-brands fa-twitter hover:text-sky-400 transition-all cursor-pointer"></i>
+          <div className="flex gap-4 ml-2 text-xl items-center">
+           <a href="https://www.youtube.com/"> <i className="fa-brands fa-youtube hover:text-red-500 transition-all cursor-pointer"></i></a>
+           <a href="https://www.instagram.com/"><i className="fa-brands fa-instagram hover:text-pink-500 transition-all cursor-pointer"></i></a>
+           <a href="https://www.facebook.com/"><i className="fa-brands fa-facebook hover:text-blue-500 transition-all cursor-pointer"></i></a>
+           <a href="https://x.com/"> <i className="fa-brands fa-twitter hover:text-sky-400 transition-all cursor-pointer"></i></a>
           </div>
 
           {/* CART ICON */}
@@ -96,7 +96,7 @@ const Naavbar = () => {
 
         {/* SOCIAL ICONS */}
         <div className="flex gap-4 text-xl pt-2">
-          <i className="fa-brands fa-youtube"></i>
+          <a href="https://www.youtube.com/"><i className="fa-brands fa-youtube"></i></a>
           <i className="fa-brands fa-instagram"></i>
           <i className="fa-brands fa-facebook"></i>
           <i className="fa-brands fa-twitter"></i>
